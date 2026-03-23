@@ -436,7 +436,8 @@ function calculateRevenue() {
 
     // Business Case (Position 1)
     const pos1Monthly = monthlyRevenues[0];
-    const rankMonths  = Math.max(0, 12 - timeToRank);
+    const horizon     = timeToRank >= 12 ? timeToRank + 12 : 12;
+    const rankMonths  = Math.max(0, horizon - timeToRank);
     const rev12m      = Math.round(pos1Monthly * rankMonths);
     const payback     = totalInvestment > 0 && pos1Monthly > 0 ? (totalInvestment / pos1Monthly).toFixed(1) : '—';
     const roi12m      = totalInvestment > 0 ? Math.round(rev12m - totalInvestment) : null;
@@ -457,7 +458,7 @@ function calculateRevenue() {
         <div class="bc-title">📊 Business Case — Position 1</div>
         <div class="bc-grid">
           <div class="bc-stat"><div class="stat-label">Monthly Revenue (Pos 1)</div><div class="stat-value accent" id="bc-monthly">0€</div></div>
-          <div class="bc-stat"><div class="stat-label">Revenue over 12 months after ranking</div><div class="stat-value accent" id="bc-12m">0€</div></div>
+          <div class="bc-stat"><div class="stat-label">Revenue over ${rankMonths} months (${horizon}mo horizon)</div><div class="stat-value accent" id="bc-12m">0€</div></div>
           <div class="bc-stat"><div class="stat-label">Total SEO Investment</div><div class="stat-value warn">${totalInvestment.toLocaleString()}€</div></div>
           <div class="bc-stat"><div class="stat-label">Payback Period</div><div class="stat-value">${payback !== '—' ? payback + ' months' : '—'}</div></div>
           <div class="bc-stat" style="grid-column:1/-1"><div class="stat-label">12-Month ROI (Revenue − Investment)</div><div class="stat-value ${roiClass}" id="bc-roi">${roi12m !== null ? '...' : '—'}</div></div>
